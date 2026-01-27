@@ -421,6 +421,92 @@
             font-size: 16px;
         }
 
+        /* POPUP ICON CSS */
+        .safety-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+        }
+
+        .popup-icon {
+            width: 60px;
+            height: 60px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+            font-size: 28px;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .popup-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .popup-message {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            width: 250px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            display: none;
+            font-size: 14px;
+            line-height: 1.4;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .popup-message.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .popup-message p {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .popup-message strong {
+            color: #ff6b6b;
+        }
+
+        .close-popup {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            width: 100%;
+            margin-top: 8px;
+            transition: all 0.3s;
+        }
+
+        .close-popup:hover {
+            background: #5a6fd8;
+        }
+
         @media (max-width: 768px) {
             .navbar {
                 padding: 12px 15px;
@@ -475,6 +561,23 @@
             .slider-arrow {
                 opacity: 1;
             }
+
+            /* Mobile popup */
+            .safety-popup {
+                bottom: 15px;
+                right: 15px;
+            }
+            
+            .popup-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+            
+            .popup-message {
+                width: 220px;
+                right: -10px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -515,6 +618,18 @@
         <a href="tel:7479597096" class="help-btn">📞 Get Help</a>
     </nav>
 
+    <!-- Safety Popup Icon -->
+    <div class="safety-popup">
+        <div class="popup-message" id="popupMessage">
+            <p><strong>⚠️ Safety Alert!</strong></p>
+            <p>If any person forces you to meet in a strange place to sell books, please alert authorities. Always meet in safe public places and stay safe from scammers.</p>
+            <button class="close-popup" onclick="closePopup()">Got it</button>
+        </div>
+        <div class="popup-icon" onclick="togglePopup()">
+            ⚠️
+        </div>
+    </div>
+
     <!-- Buy Books Section -->
     <div class="container">
         <a href="/" class="back-btn">← Back to Home</a>
@@ -550,6 +665,36 @@
     </div>
 
     <script>
+        // Popup functions
+        function togglePopup() {
+            const popup = document.getElementById('popupMessage');
+            popup.classList.toggle('show');
+        }
+
+        function closePopup() {
+            const popup = document.getElementById('popupMessage');
+            popup.classList.remove('show');
+        }
+
+        // Close popup when clicking outside
+        document.addEventListener('click', function(event) {
+            const popup = document.getElementById('popupMessage');
+            const icon = document.querySelector('.popup-icon');
+            
+            if (popup.classList.contains('show') && 
+                !popup.contains(event.target) && 
+                !icon.contains(event.target)) {
+                popup.classList.remove('show');
+            }
+        });
+
+        // Auto-show popup after 3 seconds when page loads
+        setTimeout(() => {
+            const popup = document.getElementById('popupMessage');
+            popup.classList.add('show');
+        }, 3000);
+
+        // Book loading functions
         let allBooks = [];
 
         async function loadBooks() {
@@ -814,7 +959,6 @@
 
         // Load books when page loads
         document.addEventListener('DOMContentLoaded', loadBooks);
-
     </script>
 </body>
 </html>
