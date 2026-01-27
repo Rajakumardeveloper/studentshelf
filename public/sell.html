@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sell Your Book - STUDENTSHELF</title>
     <style>
+        /* ALL CSS STAYS EXACTLY THE SAME AS YOURS */
         * {
             margin: 0;
             padding: 0;
@@ -483,9 +484,9 @@
             STUDENTSHELF
         </div>
         <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="/sell">Sell Book</a>
-            <a href="/buy">Buy Book</a>
+            <a href="index.html">Home</a>
+            <a href="sell.html">Sell Book</a>
+            <a href="buy.html">Buy Book</a>
         </div>
         <a href="tel:7479597096" class="help-btn">📞 Get Help</a>
     </nav>
@@ -510,7 +511,7 @@
 
     <!-- Sell Form Section -->
     <div class="container">
-        <a href="/" class="back-btn">← Back to Home</a>
+        <a href="index.html" class="back-btn">← Back to Home</a>
         <div class="form-card">
             <h1 class="form-title">📖 Sell Your Book</h1>
 
@@ -622,7 +623,6 @@
 
         function toggleStudentFields() {
             if (isStudentCheckbox.checked) {
-                // User is a student
                 schoolLabel.textContent = 'School Name & Address *';
                 schoolNameInput.placeholder = 'Enter school name & address';
                 classNameGroup.classList.remove('disabled');
@@ -630,7 +630,6 @@
                 classNameInput.required = true;
                 classRoomInput.required = true;
             } else {
-                // User is NOT a student
                 schoolLabel.textContent = 'Your Address *';
                 schoolNameInput.placeholder = 'Enter your complete address';
                 classNameGroup.classList.add('disabled');
@@ -698,23 +697,50 @@
             fileInput.files = dt.files;
         }
 
+        // SAVE BOOK FUNCTION - This saves to browser storage
+        function saveBookToStorage(bookData) {
+            try {
+                // Get existing books from localStorage
+                let books = JSON.parse(localStorage.getItem('studentshelf_books') || '[]');
+                
+                // Add new book with unique ID
+                const newBook = {
+                    id: Date.now(), // Unique ID
+                    ...bookData,
+                    date: new Date().toLocaleDateString('en-IN')
+                };
+                
+                // Add to books array
+                books.push(newBook);
+                
+                // Save back to localStorage
+                localStorage.setItem('studentshelf_books', JSON.stringify(books));
+                
+                console.log('✅ Book saved! Total books:', books.length);
+                return true;
+            } catch (error) {
+                console.error('❌ Error saving book:', error);
+                return false;
+            }
+        }
+
         // Form submission - shows warning modal first
-        document.getElementById('bookForm').addEventListener('submit', async function(e) {
+        document.getElementById('bookForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             // Collect form data
             const formData = {
                 isStudent: isStudentCheckbox.checked,
-                studentName: document.getElementById('studentName').value,
-                schoolName: document.getElementById('schoolName').value,
-                className: document.getElementById('className').value,
-                classRoom: document.getElementById('classRoom').value,
-                bookName: document.getElementById('bookName').value,
+                studentName: document.getElementById('studentName').value.trim(),
+                schoolName: document.getElementById('schoolName').value.trim(),
+                className: document.getElementById('className').value.trim(),
+                classRoom: document.getElementById('classRoom').value.trim(),
+                bookName: document.getElementById('bookName').value.trim(),
                 medium: document.getElementById('medium').value,
-                price: document.getElementById('price').value,
-                phoneNumber: document.getElementById('phoneNumber').value,
-                bookDescription: document.getElementById('bookDescription').value,
-                additionalMessages: document.getElementById('additionalMessages').value
+                price: document.getElementById('price').value.trim(),
+                phoneNumber: document.getElementById('phoneNumber').value.trim(),
+                bookDescription: document.getElementById('bookDescription').value.trim(),
+                additionalMessages: document.getElementById('additionalMessages').value.trim()
             };
 
             // Validate
@@ -723,7 +749,7 @@
                 requiredFields.push('className', 'classRoom');
             }
             
-            const missingFields = requiredFields.filter(field => !formData[field] || formData[field].trim() === '');
+            const missingFields = requiredFields.filter(field => !formData[field]);
 
             if (missingFields.length > 0) {
                 document.getElementById('message').innerHTML = 
@@ -736,22 +762,21 @@
             warningModal.style.display = 'flex';
         });
 
-        // Handle modal confirm button
-        confirmSubmitBtn.addEventListener('click', async function() {
+        // Handle modal confirm button - ACTUALLY SAVE THE BOOK
+        confirmSubmitBtn.addEventListener('click', function() {
             warningModal.style.display = 'none';
             
             const submitBtn = document.getElementById('submitBtn');
+            const messageDiv = document.getElementById('message');
             const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Posting...';
+            
+            submitBtn.textContent = 'Saving...';
             submitBtn.disabled = true;
 
-            try {
-                // SIMULATE SUCCESSFUL SUBMISSION (NO SERVER NEEDED)
-                // This will work without any backend server
-                console.log('📤 Form data:', formDataToSubmit);
-                
-                // Show success message
-                const messageDiv = document.getElementById('message');
+            // Save the book to localStorage
+            const saved = saveBookToStorage(formDataToSubmit);
+
+            if (saved) {
                 messageDiv.innerHTML = '<div class="success">✅ Book posted successfully!</div>';
                 
                 // Reset form
@@ -760,20 +785,20 @@
                 isStudentCheckbox.checked = true;
                 toggleStudentFields();
                 
-                // Clear success message after 5 seconds
+                // Redirect to buy page after 3 seconds
                 setTimeout(() => {
-                    messageDiv.innerHTML = '';
-                }, 5000);
-                
-            } catch (error) {
-                console.error('❌ Error:', error);
-                document.getElementById('message').innerHTML = 
-                    `<div class="error">❌ ${error.message || 'Error posting book'}</div>`;
-            } finally {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-                formDataToSubmit = null;
+                    messageDiv.innerHTML = '<div class="success">✅ Redirecting to Buy page...</div>';
+                    setTimeout(() => {
+                        window.location.href = 'buy.html';
+                    }, 1000);
+                }, 3000);
+            } else {
+                messageDiv.innerHTML = '<div class="error">❌ Error saving book. Please try again.</div>';
             }
+            
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+            formDataToSubmit = null;
         });
 
         // Handle modal cancel button
@@ -784,13 +809,8 @@
 
         // Page loaded
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('✅ Page loaded successfully');
-            console.log('🎯 Features:');
-            console.log('1. Student/Non-student toggle');
-            console.log('2. Safety warning popup before submission');
-            console.log('3. Photo upload with preview');
-            console.log('4. Form validation');
-            console.log('5. Works without server (simulated submission)');
+            console.log('✅ Sell page loaded successfully');
+            console.log('📚 Books will be saved to browser storage');
         });
     </script>
 </body>
