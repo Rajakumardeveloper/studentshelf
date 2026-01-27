@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your Book - STUDENTSHELF</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            font-size: 24px;
+            margin-right: 8px;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .help-btn {
+            background: #ff6b6b;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .help-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .form-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .photo-upload {
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9ff;
+        }
+
+        .photo-upload p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .upload-btn {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .upload-btn:hover {
+            background: #5a6fd8;
+        }
+
+        .photo-preview {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #e0e0e0;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-photo {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .optional {
+            color: #666;
+            font-weight: normal;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .message {
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 15px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+                padding: 5px 10px;
+            }
+
+            .help-btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+
+            .container {
+                margin: 20px auto;
+                padding: 0 15px;
+            }
+
+            .form-card {
+                padding: 25px;
+            }
+
+            .form-title {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .photo-preview {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .submit-btn {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-card {
+                padding: 20px;
+            }
+
+            .form-title {
+                font-size: 22px;
+            }
+
+            .back-btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+
+            .photo-preview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon">📚</span>
+            STUDENTSHELF
+        </div>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/sell">Sell Book</a>
+            <a href="/buy">Buy Book</a>
+        </div>
+
+        <a href="tel:7479597096" class="help-btn">📞 Get Help</a>
+    </nav>
+
+    <!-- Sell Form Section -->
+    <div class="container">
+        <a href="/" class="back-btn">← Back to Home</a>
+
+        <div class="form-card">
+            <h1 class="form-title">📖 Sell Your Book</h1>
+
+            <form id="bookForm">
+                <!-- Student Information -->
+                <div class="form-group">
+                    <label for="studentName">Student Name *</label>
+                    <input type="text" id="studentName" name="studentName" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="schoolName">School Name *</label>
+                    <input type="text" id="schoolName" name="schoolName" placeholder="Enter your school name" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="className">Class *</label>
+                        <input type="text" id="className" name="className" placeholder="e.g., 10th Grade" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="classRoom">Class Room No *</label>
+                        <input type="text" id="classRoom" name="classRoom" placeholder="e.g., Room 101" required>
+                    </div>
+                </div>
+
+                <!-- Book Information -->
+                <div class="form-group">
+                    <label for="bookName">Book Name *</label>
+                    <input type="text" id="bookName" name="bookName" placeholder="Enter book title" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="medium">Medium *</label>
+                        <select id="medium" name="medium" required>
+                            <option value="">Select Medium</option>
+                            <option value="English">English</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Bengali">Bengali</option>
+                            <option value="Marathi">Marathi</option>
+                            <option value="Tamil">Tamil</option>
+                            <option value="Telugu">Telugu</option>
+                            <option value="Gujarati">Gujarati</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Price (₹) *</label>
+                        <input type="number" id="price" name="price" placeholder="Enter price" required>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number <span class="optional">(Optional)</span></label>
+                    <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number">
+                </div>
+
+                <!-- Book Description -->
+                <div class="form-group">
+                    <label for="bookDescription">Book Details & Description *</label>
+                    <textarea id="bookDescription" name="bookDescription" placeholder="Describe the condition of the book, any notes, special features, etc." required></textarea>
+                </div>
+
+                <!-- Photo Upload -->
+                <div class="form-group">
+                    <label>Upload Book Photos (7-8 photos recommended)</label>
+                    <div class="photo-upload">
+                        <p>📷 Click to upload photos of your book</p>
+                        <input type="file" id="photoUpload" accept="image/*" multiple style="display: none;">
+                        <button type="button" class="upload-btn" onclick="document.getElementById('photoUpload').click()">
+                            Choose Photos
+                        </button>
+                        <div class="photo-preview" id="photoPreview"></div>
+                    </div>
+                </div>
+
+                <!-- Additional Messages -->
+                <div class="form-group">
+                    <label for="additionalMessages">Additional Messages <span class="optional">(Optional)</span></label>
+                    <textarea id="additionalMessages" name="additionalMessages" placeholder="Any additional information you want to share with buyers..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">Post Book for Sale</button>
+            </form>
+
+            <div id="message"></div>
+        </div>
+    </div>
+
+    <script>
+        // Photo upload functionality
+        document.getElementById('photoUpload').addEventListener('change', function(e) {
+            const files = e.target.files;
+            const preview = document.getElementById('photoPreview');
+            
+            preview.innerHTML = '';
+            
+            const maxPhotos = 8;
+            const filesToShow = Array.from(files).slice(0, maxPhotos);
+            
+            if (filesToShow.length > maxPhotos) {
+                alert(`You can only upload up to ${maxPhotos} photos. The first ${maxPhotos} will be selected.`);
+            }
+            
+            filesToShow.forEach((file, index) => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const photoItem = document.createElement('div');
+                        photoItem.className = 'photo-item';
+                        photoItem.innerHTML = `
+                            <img src="${e.target.result}" alt="Preview ${index + 1}">
+                            <button type="button" class="remove-photo" onclick="removePhoto(${index})">×</button>
+                        `;
+                        preview.appendChild(photoItem);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        function removePhoto(index) {
+            const preview = document.getElementById('photoPreview');
+            const photoItems = preview.querySelectorAll('.photo-item');
+            if (photoItems[index]) {
+                photoItems[index].remove();
+            }
+            
+            const fileInput = document.getElementById('photoUpload');
+            const dt = new DataTransfer();
+            const files = Array.from(fileInput.files);
+            files.splice(index, 1);
+            
+            files.forEach(file => dt.items.add(file));
+            fileInput.files = dt.files;
+        }
+
+        // Helper function to convert file to base64
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // Form submission
+        document.getElementById('bookForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            console.log('🔄 Form submission started...');
+
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Posting...';
+            submitBtn.disabled = true;
+
+            try {
+                // Collect form data manually
+                const formData = {
+                    studentName: document.getElementById('studentName').value,
+                    schoolName: document.getElementById('schoolName').value,
+                    className: document.getElementById('className').value,
+                    classRoom: document.getElementById('classRoom').value,
+                    bookName: document.getElementById('bookName').value,
+                    medium: document.getElementById('medium').value,
+                    price: document.getElementById('price').value,
+                    phoneNumber: document.getElementById('phoneNumber').value,
+                    bookDescription: document.getElementById('bookDescription').value,
+                    additionalMessages: document.getElementById('additionalMessages').value,
+                    photos: []
+                };
+
+                console.log('📦 Form data collected:', formData);
+
+                // Convert uploaded images to base64
+                const photoInput = document.getElementById('photoUpload');
+                if (photoInput.files.length > 0) {
+                    console.log('📸 Processing', photoInput.files.length, 'images...');
+                    
+                    for (let file of photoInput.files) {
+                        if (file.type.startsWith('image/')) {
+                            const base64 = await fileToBase64(file);
+                            formData.photos.push(base64);
+                        }
+                    }
+                    console.log('✅ Converted', formData.photos.length, 'images to base64');
+                }
+
+                // Validate required fields
+                const requiredFields = ['studentName', 'schoolName', 'className', 'classRoom', 'bookName', 'medium', 'price', 'bookDescription'];
+                const missingFields = requiredFields.filter(field => !formData[field] || formData[field].trim() === '');
+
+                if (missingFields.length > 0) {
+                    throw new Error(`Please fill all required fields: ${missingFields.join(', ')}`);
+                }
+
+                const response = await fetch('/api/books', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                console.log('📨 Response status:', response.status);
+                const result = await response.json();
+                console.log('📨 Response data:', result);
+
+                const messageDiv = document.getElementById('message');
+                if (result.success) {
+                    messageDiv.innerHTML = '<div class="success">✅ Book posted successfully!</div>';
+                    this.reset();
+                    document.getElementById('photoPreview').innerHTML = '';
+                    
+                    // Auto-clear success message after 3 seconds
+                    setTimeout(() => {
+                        messageDiv.innerHTML = '';
+                    }, 3000);
+                } else {
+                    messageDiv.innerHTML = `<div class="error">❌ ${result.message || 'Error posting book. Please try again.'}</div>`;
+                }
+            } catch (error) {
+                console.error('❌ Error:', error);
+                document.getElementById('message').innerHTML = 
+                    `<div class="error">❌ ${error.message || 'Network error. Please make sure the server is running.'}</div>`;
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Check server status on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ Sell page loaded successfully');
+        });
+    </script>
+</body>
+</html>

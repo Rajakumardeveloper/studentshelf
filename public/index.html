@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STUDENTSHELF - Buy & Sell Books</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            font-size: 24px;
+            margin-right: 8px;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .help-btn {
+            background: #ff6b6b;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .help-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 16px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 15px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s;
+            display: inline-block;
+            min-width: 140px;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+        }
+
+        .sell-btn {
+            background: #4CAF50;
+            color: white;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .buy-btn {
+            background: #2196F3;
+            color: white;
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 50px;
+            padding: 0 15px;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex: 1;
+            min-width: 150px;
+            max-width: 200px;
+        }
+
+        .feature-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .feature h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .feature p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 15px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+                padding: 5px 10px;
+            }
+
+            .help-btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+
+            .hero {
+                padding: 30px 15px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .btn-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-btn {
+                width: 200px;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .feature {
+                width: 100%;
+                max-width: 250px;
+                margin-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 24px;
+            }
+
+            .action-btn {
+                width: 180px;
+                padding: 10px 18px;
+                font-size: 13px;
+            }
+
+            .feature {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon">📚</span>
+            STUDENTSHELF
+        </div>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/sell">Sell Book</a>
+            <a href="/buy">Buy Book</a>
+        </div>
+        
+        <a href="tel:7479597096" class="help-btn">📞 Get Help</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Welcome to StudentShelf</h1>
+        <p>Buy and sell your old books with fellow students. Easy, Fast, and Reliable!</p>
+
+        <div class="btn-container">
+            <a href="/sell" class="action-btn sell-btn">📖 Sell Books</a>
+            <a href="/buy" class="action-btn buy-btn">🛒 Buy Books</a>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">💰</div>
+                <h3>Save Money</h3>
+                <p>Get books at affordable prices</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h3>Fast & Easy</h3>
+                <p>Quick transactions</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">👥</div>
+                <h3>Trusted</h3>
+                <p>Connect with students only</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Button click confirmation
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('✅ Homepage loaded successfully');
+            
+            const sellBtn = document.querySelector('.sell-btn');
+            const buyBtn = document.querySelector('.buy-btn');
+
+            if (sellBtn) {
+                sellBtn.addEventListener('click', function () {
+                    console.log('✅ Sell button clicked - redirecting to sell page');
+                });
+            }
+
+            if (buyBtn) {
+                buyBtn.addEventListener('click', function () {
+                    console.log('✅ Buy button clicked - redirecting to buy page');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

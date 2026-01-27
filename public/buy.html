@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Books - STUDENTSHELF</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            font-size: 24px;
+            margin-right: 8px;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .help-btn {
+            background: #ff6b6b;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .help-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .page-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .search-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .search-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .smart-search {
+            display: flex;
+            gap: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .search-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .search-hint {
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-slider {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .slider-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .slider-image {
+            min-width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slider-nav {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+        }
+
+        .slider-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .slider-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.3s;
+            opacity: 0;
+        }
+
+        .book-card:hover .slider-arrow {
+            opacity: 1;
+        }
+
+        .slider-arrow:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .slider-arrow.prev {
+            left: 10px;
+        }
+
+        .slider-arrow.next {
+            right: 10px;
+        }
+
+        .image-count {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .book-content {
+            padding: 20px;
+        }
+
+        .book-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .book-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+
+        .book-price {
+            background: #4CAF50;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .book-details {
+            margin-bottom: 15px;
+        }
+
+        .book-detail {
+            margin-bottom: 6px;
+            display: flex;
+            align-items: flex-start;
+            font-size: 14px;
+        }
+
+        .book-detail strong {
+            color: #555;
+            margin-right: 8px;
+            min-width: 70px;
+            flex-shrink: 0;
+        }
+
+        .book-detail span {
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .book-description {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 13px;
+            line-height: 1.4;
+            color: #555;
+            border-left: 3px solid #667eea;
+        }
+
+        .book-contact {
+            background: #e3f2fd;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #2196F3;
+        }
+
+        .contact-label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+
+        .contact-info {
+            color: #2196F3;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .no-books {
+            text-align: center;
+            color: white;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            grid-column: 1 / -1;
+        }
+
+        .no-books-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            padding: 40px;
+            font-size: 18px;
+            grid-column: 1 / -1;
+        }
+
+        .refresh-btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .refresh-btn:hover {
+            background: #1976D2;
+            transform: translateY(-2px);
+        }
+
+        .results-count {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 12px 15px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+                padding: 5px 10px;
+            }
+
+            .help-btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+
+            .container {
+                margin: 20px auto;
+                padding: 0 15px;
+            }
+
+            .page-header h1 {
+                font-size: 28px;
+            }
+
+            .page-header p {
+                font-size: 16px;
+            }
+
+            .smart-search {
+                flex-direction: column;
+            }
+
+            .books-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .image-slider {
+                height: 180px;
+            }
+
+            .slider-arrow {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 24px;
+            }
+
+            .book-title {
+                font-size: 16px;
+            }
+
+            .back-btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+
+            .search-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon">📚</span>
+            STUDENTSHELF
+        </div>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/sell">Sell Book</a>
+            <a href="/buy">Buy Book</a>
+        </div>
+
+        <a href="tel:7479597096" class="help-btn">📞 Get Help</a>
+    </nav>
+
+    <!-- Buy Books Section -->
+    <div class="container">
+        <a href="/" class="back-btn">← Back to Home</a>
+
+        <div class="page-header">
+            <h1>🛒 Buy Books</h1>
+            <p>Find affordable books from fellow students</p>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-section">
+            <h3 class="search-title">🔍 Search Books</h3>
+            <div class="smart-search">
+                <input type="text" id="smartSearch" class="search-input" placeholder="Search by book name, school, class...">
+                <button onclick="smartSearch()" class="search-btn">Search</button>
+            </div>
+            <div class="search-hint">
+                💡 Try: "Class 10", "Math book", "English medium"
+            </div>
+        </div>
+
+        <div id="resultsCount" class="results-count"></div>
+
+        <div id="loading" class="loading">
+            🔄 Loading books...
+        </div>
+
+        <div id="booksList" class="books-grid"></div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <button onclick="loadBooks()" class="refresh-btn">🔄 Refresh Books</button>
+        </div>
+    </div>
+
+    <script>
+        let allBooks = [];
+
+        async function loadBooks() {
+            const loadingElement = document.getElementById('loading');
+            const booksListElement = document.getElementById('booksList');
+            const resultsCountElement = document.getElementById('resultsCount');
+            
+            loadingElement.style.display = 'block';
+            booksListElement.innerHTML = '';
+            resultsCountElement.innerHTML = '';
+
+            try {
+                const response = await fetch('/api/books');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                allBooks = await response.json();
+                console.log('✅ Books loaded:', allBooks);
+
+                loadingElement.style.display = 'none';
+                displayBooks(allBooks);
+
+            } catch (error) {
+                console.error('❌ Error loading books:', error);
+                loadingElement.style.display = 'none';
+                booksListElement.innerHTML = `
+                    <div class="no-books">
+                        <div class="no-books-icon">⚠️</div>
+                        <h3>Error Loading Books</h3>
+                        <p>Please check your connection and try again.</p>
+                        <button onclick="loadBooks()" class="refresh-btn">Try Again</button>
+                    </div>
+                `;
+            }
+        }
+
+        function displayBooks(books) {
+            const booksListElement = document.getElementById('booksList');
+            const resultsCountElement = document.getElementById('resultsCount');
+
+            if (books.length === 0) {
+                booksListElement.innerHTML = `
+                    <div class="no-books">
+                        <div class="no-books-icon">📚</div>
+                        <h3>No Books Found</h3>
+                        <p>No books match your search criteria.</p>
+                        <a href="/sell" class="search-btn" style="display: inline-block; margin-top: 15px; text-decoration: none;">Sell Your Book</a>
+                    </div>
+                `;
+                resultsCountElement.innerHTML = '';
+                return;
+            }
+
+            resultsCountElement.innerHTML = `Showing ${books.length} book${books.length !== 1 ? 's' : ''}`;
+
+            booksListElement.innerHTML = books.map((book, bookIndex) => {
+                const studentName = book.studentName || 'Not provided';
+                const schoolName = book.schoolName || 'Not provided';
+                const className = book.className || 'Not provided';
+                const classRoom = book.classRoom || 'Not provided';
+                const bookName = book.bookName || 'Not provided';
+                const medium = book.medium || 'Not provided';
+                const price = book.price || 'Not specified';
+                const phoneNumber = book.phoneNumber || 'Not provided';
+                const bookDescription = book.bookDescription || '';
+                const additionalMessages = book.additionalMessages || '';
+                const photos = book.photos || [];
+
+                return `
+                <div class="book-card">
+                    <div class="image-slider" id="slider-${bookIndex}">
+                        ${photos.length > 0 ? `
+                            <div class="slider-container" id="slider-container-${bookIndex}">
+                                ${photos.map((photo, photoIndex) => `
+                                    <img src="${photo}" alt="${bookName} - Image ${photoIndex + 1}" class="slider-image">
+                                `).join('')}
+                            </div>
+                            <div class="image-count">${photos.length} 📷</div>
+                            ${photos.length > 1 ? `
+                                <button class="slider-arrow prev" onclick="slideImage(${bookIndex}, -1)">‹</button>
+                                <button class="slider-arrow next" onclick="slideImage(${bookIndex}, 1)">›</button>
+                                <div class="slider-nav" id="slider-nav-${bookIndex}">
+                                    ${photos.map((_, dotIndex) => `
+                                        <div class="slider-dot ${dotIndex === 0 ? 'active' : ''}" onclick="goToSlide(${bookIndex}, ${dotIndex})"></div>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                        ` : `
+                            <div class="slider-container" style="display: flex; align-items: center; justify-content: center; background: #f5f5f5;">
+                                <div style="font-size: 48px; color: #667eea;">📚</div>
+                            </div>
+                        `}
+                    </div>
+                    <div class="book-content">
+                        <div class="book-header">
+                            <h3 class="book-title">${bookName}</h3>
+                            <div class="book-price">₹${price}</div>
+                        </div>
+                        
+                        <div class="book-details">
+                            <div class="book-detail">
+                                <strong>Student:</strong>
+                                <span>${studentName}</span>
+                            </div>
+                            
+                            <div class="book-detail">
+                                <strong>School:</strong>
+                                <span>${schoolName}</span>
+                            </div>
+                            
+                            <div class="book-detail">
+                                <strong>Class:</strong>
+                                <span>${className}</span>
+                            </div>
+                            
+                            <div class="book-detail">
+                                <strong>Room:</strong>
+                                <span>${classRoom}</span>
+                            </div>
+                            
+                            <div class="book-detail">
+                                <strong>Medium:</strong>
+                                <span>${medium}</span>
+                            </div>
+                        </div>
+                        
+                        ${bookDescription ? `
+                            <div class="book-description">
+                                <strong>Description:</strong> ${bookDescription}
+                            </div>
+                        ` : ''}
+                        
+                        ${additionalMessages ? `
+                            <div class="book-description" style="background: #fff3cd; border-left-color: #ffc107;">
+                                <strong>Note:</strong> ${additionalMessages}
+                            </div>
+                        ` : ''}
+                        
+                        <div class="book-contact">
+                            <div class="contact-label">📞 Contact Seller:</div>
+                            <div class="contact-info">${phoneNumber}</div>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            // Initialize sliders
+            books.forEach((book, index) => {
+                if (book.photos && book.photos.length > 1) {
+                    initializeSlider(index, book.photos.length);
+                }
+            });
+        }
+
+        // Slider functions
+        function initializeSlider(bookIndex, totalSlides) {
+            const sliderStates = window.sliderStates = window.sliderStates || {};
+            sliderStates[bookIndex] = {
+                currentSlide: 0,
+                totalSlides: totalSlides
+            };
+        }
+
+        function slideImage(bookIndex, direction) {
+            const state = window.sliderStates[bookIndex];
+            if (!state) return;
+
+            state.currentSlide += direction;
+            
+            if (state.currentSlide < 0) {
+                state.currentSlide = state.totalSlides - 1;
+            } else if (state.currentSlide >= state.totalSlides) {
+                state.currentSlide = 0;
+            }
+
+            updateSlider(bookIndex);
+        }
+
+        function goToSlide(bookIndex, slideIndex) {
+            const state = window.sliderStates[bookIndex];
+            if (!state) return;
+
+            state.currentSlide = slideIndex;
+            updateSlider(bookIndex);
+        }
+
+        function updateSlider(bookIndex) {
+            const state = window.sliderStates[bookIndex];
+            if (!state) return;
+
+            const container = document.getElementById(`slider-container-${bookIndex}`);
+            const nav = document.getElementById(`slider-nav-${bookIndex}`);
+
+            if (container) {
+                container.style.transform = `translateX(-${state.currentSlide * 100}%)`;
+            }
+
+            if (nav) {
+                const dots = nav.querySelectorAll('.slider-dot');
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === state.currentSlide);
+                });
+            }
+        }
+
+        function smartSearch() {
+            const searchTerm = document.getElementById('smartSearch').value.toLowerCase().trim();
+            
+            if (!searchTerm) {
+                displayBooks(allBooks);
+                return;
+            }
+
+            const filteredBooks = allBooks.filter(book => {
+                const searchableText = `
+                    ${book.bookName || ''} 
+                    ${book.schoolName || ''} 
+                    ${book.className || ''} 
+                    ${book.medium || ''}
+                    ${book.studentName || ''}
+                `.toLowerCase();
+
+                const searchWords = searchTerm.split(' ');
+                
+                return searchWords.some(word => {
+                    if (word.length < 2) return false;
+                    
+                    if (searchableText.includes(word)) return true;
+                    
+                    const fields = [
+                        book.schoolName, 
+                        book.className, 
+                        book.bookName, 
+                        book.medium,
+                        book.studentName
+                    ];
+                    
+                    return fields.some(field => 
+                        field && field.toLowerCase().includes(word)
+                    );
+                });
+            });
+
+            displayBooks(filteredBooks);
+        }
+
+        // Real-time search
+        document.getElementById('smartSearch').addEventListener('input', function() {
+            clearTimeout(this.searchTimeout);
+            this.searchTimeout = setTimeout(smartSearch, 300);
+        });
+
+        // Enter key support
+        document.getElementById('smartSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                smartSearch();
+            }
+        });
+
+        // Load books when page loads
+        document.addEventListener('DOMContentLoaded', loadBooks);
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1763386545913,
+    "studentName": "Punit kumar",
+    "schoolName": "Skbv no 2 mandwali",
+    "className": "12",
+    "classRoom": "21",
+    "bookName": "capital",
+    "medium": "english",
+    "price": "320",
+    "phoneNumber": "07479597096",
+    "bookDescription": "book condition is perfect",
+    "additionalMessages": "if want to buy so please call me",
+    "photos": [
+      "/uploads/book_1763386545908_0.jpg",
+      "/uploads/book_1763386545911_1.jpg"
+    ],
+    "date": "17/11/2025"
+  }
+]
