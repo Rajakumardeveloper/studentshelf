@@ -205,6 +205,7 @@
             height: 200px;
             overflow: hidden;
             border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
         }
 
         .slider-container {
@@ -218,6 +219,7 @@
             min-width: 100%;
             height: 100%;
             object-fit: cover;
+            cursor: zoom-in;
         }
 
         .slider-nav {
@@ -236,6 +238,7 @@
             background: rgba(255, 255, 255, 0.5);
             cursor: pointer;
             transition: all 0.3s;
+            z-index: 2;
         }
 
         .slider-dot.active {
@@ -260,6 +263,7 @@
             font-size: 16px;
             transition: all 0.3s;
             opacity: 0;
+            z-index: 2;
         }
 
         .book-card:hover .slider-arrow {
@@ -288,6 +292,7 @@
             border-radius: 12px;
             font-size: 12px;
             font-weight: bold;
+            z-index: 2;
         }
 
         .book-content {
@@ -419,6 +424,115 @@
             text-align: center;
             margin-bottom: 20px;
             font-size: 16px;
+        }
+
+        /* Image Modal Styles */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .image-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 5px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .modal-arrow {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-arrow:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .modal-info {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .image-counter {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* POPUP ICON CSS */
@@ -562,6 +676,23 @@
                 opacity: 1;
             }
 
+            /* Modal adjustments for mobile */
+            .modal-content {
+                max-width: 95%;
+                max-height: 80%;
+            }
+
+            .modal-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .modal-close {
+                top: -35px;
+                right: -10px;
+            }
+
             /* Mobile popup */
             .safety-popup {
                 bottom: 15px;
@@ -597,11 +728,35 @@
             .search-section {
                 padding: 20px;
             }
+
+            .modal-arrow {
+                width: 35px;
+                height: 35px;
+                font-size: 18px;
+            }
         }
     </style>
 </head>
 
 <body>
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <img class="modal-image" id="modalImage" src="" alt="Book Image">
+            
+            <div class="modal-nav">
+                <button class="modal-arrow prev" onclick="prevModalImage()">‹</button>
+                <button class="modal-arrow next" onclick="nextModalImage()">›</button>
+            </div>
+            
+            <div class="modal-info">
+                <div id="modalBookName"></div>
+                <div class="image-counter" id="modalImageCounter"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="logo">
@@ -615,7 +770,7 @@
             <a href="/buy">Buy Book</a>
         </div>
 
-        <a href="tel:7479597096" class="help-btn">📞 Get Help</a>
+        <a href="tel:9198137002" class="help-btn">📞 Get Help</a>
     </nav>
 
     <!-- Safety Popup Icon -->
@@ -665,6 +820,10 @@
     </div>
 
     <script>
+        // Global variables for image modal
+        let currentModalBook = null;
+        let currentModalImageIndex = 0;
+
         // Popup functions
         function togglePopup() {
             const popup = document.getElementById('popupMessage');
@@ -693,6 +852,76 @@
             const popup = document.getElementById('popupMessage');
             popup.classList.add('show');
         }, 3000);
+
+        // Image Modal Functions
+        function openImageModal(bookIndex, imageIndex = 0) {
+            const book = allBooks[bookIndex];
+            if (!book || !book.photos || book.photos.length === 0) return;
+            
+            currentModalBook = book;
+            currentModalImageIndex = imageIndex;
+            
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalBookName = document.getElementById('modalBookName');
+            const modalImageCounter = document.getElementById('modalImageCounter');
+            
+            modalImage.src = book.photos[imageIndex];
+            modalBookName.textContent = book.bookName || 'Book Image';
+            modalImageCounter.textContent = `${imageIndex + 1} / ${book.photos.length}`;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function nextModalImage() {
+            if (!currentModalBook || !currentModalBook.photos) return;
+            
+            currentModalImageIndex = (currentModalImageIndex + 1) % currentModalBook.photos.length;
+            updateModalImage();
+        }
+
+        function prevModalImage() {
+            if (!currentModalBook || !currentModalBook.photos) return;
+            
+            currentModalImageIndex = (currentModalImageIndex - 1 + currentModalBook.photos.length) % currentModalBook.photos.length;
+            updateModalImage();
+        }
+
+        function updateModalImage() {
+            const modalImage = document.getElementById('modalImage');
+            const modalImageCounter = document.getElementById('modalImageCounter');
+            
+            modalImage.src = currentModalBook.photos[currentModalImageIndex];
+            modalImageCounter.textContent = `${currentModalImageIndex + 1} / ${currentModalBook.photos.length}`;
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            const modal = document.getElementById('imageModal');
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+            if (e.key === 'ArrowRight' && modal.classList.contains('active')) {
+                nextModalImage();
+            }
+            if (e.key === 'ArrowLeft' && modal.classList.contains('active')) {
+                prevModalImage();
+            }
+        });
+
+        // Close modal when clicking outside image
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
 
         // Book loading functions
         let allBooks = [];
@@ -767,20 +996,23 @@
 
                 return `
                 <div class="book-card">
-                    <div class="image-slider" id="slider-${bookIndex}">
+                    <div class="image-slider" onclick="openImageModal(${bookIndex})">
                         ${photos.length > 0 ? `
                             <div class="slider-container" id="slider-container-${bookIndex}">
                                 ${photos.map((photo, photoIndex) => `
-                                    <img src="${photo}" alt="${bookName} - Image ${photoIndex + 1}" class="slider-image">
+                                    <img src="${photo}" 
+                                         alt="${bookName} - Image ${photoIndex + 1}" 
+                                         class="slider-image"
+                                         onclick="event.stopPropagation(); openImageModal(${bookIndex}, ${photoIndex})">
                                 `).join('')}
                             </div>
                             <div class="image-count">${photos.length} 📷</div>
                             ${photos.length > 1 ? `
-                                <button class="slider-arrow prev" onclick="slideImage(${bookIndex}, -1)">‹</button>
-                                <button class="slider-arrow next" onclick="slideImage(${bookIndex}, 1)">›</button>
+                                <button class="slider-arrow prev" onclick="event.stopPropagation(); slideImage(${bookIndex}, -1)">‹</button>
+                                <button class="slider-arrow next" onclick="event.stopPropagation(); slideImage(${bookIndex}, 1)">›</button>
                                 <div class="slider-nav" id="slider-nav-${bookIndex}">
                                     ${photos.map((_, dotIndex) => `
-                                        <div class="slider-dot ${dotIndex === 0 ? 'active' : ''}" onclick="goToSlide(${bookIndex}, ${dotIndex})"></div>
+                                        <div class="slider-dot ${dotIndex === 0 ? 'active' : ''}" onclick="event.stopPropagation(); goToSlide(${bookIndex}, ${dotIndex})"></div>
                                     `).join('')}
                                 </div>
                             ` : ''}
